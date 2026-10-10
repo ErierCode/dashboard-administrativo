@@ -1,0 +1,47 @@
+<section class="space-y-8">
+  <div>
+    <p class="text-slate-600">
+      Resumen del panel de estudiantes. Los datos viven en memoria para el taller.
+    </p>
+  </div>
+
+  <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <app-stat-card titulo="Total" [valor]="total()" descripcion="Estudiantes registrados" />
+    <app-stat-card titulo="Activos" [valor]="activos()" descripcion="Cursando actualmente" />
+    <app-stat-card titulo="Egresados" [valor]="egresados()" descripcion="Ya finalizaron" />
+    <app-stat-card
+      titulo="Promedio general"
+      [valor]="promedioGeneral()"
+      descripcion="De todos los estudiantes"
+    />
+  </div>
+
+  <div class="rounded-xl border border-slate-200 bg-white shadow-sm">
+    <div class="flex items-center justify-between border-b border-slate-100 px-5 py-4">
+      <h3 class="font-semibold text-slate-900">Ingresos más recientes</h3>
+      <a routerLink="/estudiantes" class="text-sm font-medium text-indigo-600 hover:text-indigo-800">
+        Ver todos
+      </a>
+    </div>
+
+    <ul class="divide-y divide-slate-100">
+      @for (estudiante of recientes(); track estudiante.id) {
+        <li class="flex flex-col gap-1 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+          <div>
+            <a
+              [routerLink]="['/estudiantes', estudiante.id]"
+              class="font-medium text-slate-900 hover:text-indigo-700"
+            >
+              {{ estudiante.nombre }}
+            </a>
+            <p class="text-sm text-slate-500">{{ estudiante.carrera }}</p>
+          </div>
+          <div class="flex flex-wrap items-center gap-3 text-sm text-slate-500">
+            <span>{{ estudiante.estado | estado }}</span>
+            <span>{{ estudiante.fechaIngreso | date: 'd MMM y' : undefined : 'es' }}</span>
+          </div>
+        </li>
+      }
+    </ul>
+  </div>
+</section>

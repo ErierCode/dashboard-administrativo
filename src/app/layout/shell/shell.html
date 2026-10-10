@@ -1,0 +1,40 @@
+<div class="min-h-screen bg-slate-100 text-slate-800 lg:flex">
+  <aside class="bg-indigo-950 text-white lg:flex lg:w-64 lg:flex-col lg:min-h-screen">
+    <div class="border-b border-indigo-900 px-6 py-5">
+      <p class="text-xs font-semibold uppercase tracking-wider text-indigo-300">Taller Angular</p>
+      <h1 class="mt-1 text-lg font-bold">Dashboard administrativo</h1>
+    </div>
+
+    <nav class="flex gap-2 overflow-x-auto px-4 py-4 lg:flex-1 lg:flex-col lg:overflow-visible">
+      <a
+        routerLink="/"
+        routerLinkActive="bg-indigo-800 text-white"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium text-indigo-100 transition hover:bg-indigo-900"
+      >
+        Inicio
+      </a>
+      <a
+        routerLink="/estudiantes"
+        routerLinkActive="bg-indigo-800 text-white"
+        class="whitespace-nowrap rounded-lg px-4 py-2.5 text-sm font-medium text-indigo-100 transition hover:bg-indigo-900"
+      >
+        Estudiantes
+      </a>
+    </nav>
+
+    <div class="hidden border-t border-indigo-900 px-6 py-4 text-xs text-indigo-300 lg:block">
+      Gestión de estudiantes
+    </div>
+  </aside>
+
+  <div class="flex min-w-0 flex-1 flex-col">
+    <header class="border-b border-slate-200 bg-white px-4 py-4 sm:px-6 lg:px-8">
+      <h2 class="text-xl font-semibold text-slate-900 sm:text-2xl">{{ titulo() }}</h2>
+    </header>
+
+    <main class="flex-1 px-4 py-6 sm:px-6 lg:px-8">
+      <router-outlet />
+    </main>
+  </div>
+</div>

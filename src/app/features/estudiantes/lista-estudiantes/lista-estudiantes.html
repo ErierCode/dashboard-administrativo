@@ -1,0 +1,76 @@
+<section class="space-y-6">
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+    <div class="grid flex-1 gap-4 sm:grid-cols-2">
+      <label class="block">
+        <span class="mb-1.5 block text-sm font-medium text-slate-700">Buscar</span>
+        <input
+          type="search"
+          [ngModel]="busqueda()"
+          (ngModelChange)="busqueda.set($event)"
+          placeholder="Nombre o correo"
+          class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-indigo-500 focus:ring-2"
+        />
+      </label>
+
+      <label class="block">
+        <span class="mb-1.5 block text-sm font-medium text-slate-700">Estado</span>
+        <select
+          [ngModel]="filtroEstado()"
+          (ngModelChange)="filtroEstado.set($event)"
+          class="w-full rounded-lg border border-slate-300 bg-white px-3 py-2 text-sm outline-none ring-indigo-500 focus:ring-2"
+        >
+          <option value="todos">Todos</option>
+          <option value="activo">Activo</option>
+          <option value="inactivo">Inactivo</option>
+          <option value="egresado">Egresado</option>
+        </select>
+      </label>
+    </div>
+
+    <a
+      routerLink="/estudiantes/nuevo"
+      class="inline-flex items-center justify-center rounded-lg bg-indigo-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-700"
+    >
+      Nuevo estudiante
+    </a>
+  </div>
+
+  <div class="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm">
+    @if (filtrados().length === 0) {
+      <div class="px-6 py-12 text-center">
+        <p class="font-medium text-slate-900">No hay estudiantes con esos filtros</p>
+        <p class="mt-1 text-sm text-slate-500">Prueba otra búsqueda o cambia el estado.</p>
+      </div>
+    } @else {
+      <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-slate-200 text-sm">
+          <thead class="bg-slate-50 text-left text-xs uppercase tracking-wide text-slate-500">
+            <tr>
+              <th class="px-4 py-3 font-semibold">Nombre</th>
+              <th class="hidden px-4 py-3 font-semibold md:table-cell">Correo</th>
+              <th class="px-4 py-3 font-semibold">Carrera</th>
+              <th class="px-4 py-3 font-semibold">Estado</th>
+              <th class="hidden px-4 py-3 font-semibold lg:table-cell">Ingreso</th>
+              <th class="px-4 py-3 font-semibold">Promedio</th>
+              <th class="px-4 py-3 font-semibold">Acciones</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            @for (estudiante of filtrados(); track estudiante.id) {
+              <tr
+                app-estudiante-fila
+                [estudiante]="estudiante"
+                (eliminar)="eliminar($event)"
+                class="hover:bg-slate-50"
+              ></tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+
+  <p class="text-sm text-slate-500">
+    Mostrando {{ filtrados().length }} resultado(s).
+  </p>
+</section>
