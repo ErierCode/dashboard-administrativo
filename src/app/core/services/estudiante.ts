@@ -1,5 +1,8 @@
 import { Injectable, signal } from '@angular/core';
 import { Estudiante } from '../models/estudiante.model';
+import { cargar, guardar } from '../utils/almacenamiento';
+
+const CLAVE_ESTUDIANTES = 'dashboard.estudiantes';
 
 const ESTUDIANTES_INICIALES: Estudiante[] = [
   {
@@ -80,7 +83,9 @@ const ESTUDIANTES_INICIALES: Estudiante[] = [
   providedIn: 'root',
 })
 export class EstudianteService {
-  private readonly estudiantesSignal = signal<Estudiante[]>([...ESTUDIANTES_INICIALES]);
+  private readonly estudiantesSignal = signal<Estudiante[]>(
+    cargar(CLAVE_ESTUDIANTES, [...ESTUDIANTES_INICIALES]),
+  );
 
   readonly estudiantes = this.estudiantesSignal.asReadonly();
 
@@ -95,6 +100,7 @@ export class EstudianteService {
     };
 
     this.estudiantesSignal.update((lista) => [...lista, nuevo]);
+    this.persistir();
     return nuevo;
   }
 
@@ -112,10 +118,16 @@ export class EstudianteService {
       }),
     );
 
+    this.persistir();
     return actualizado;
   }
 
   eliminar(id: string): void {
     this.estudiantesSignal.update((lista) => lista.filter((estudiante) => estudiante.id !== id));
+    this.persistir();
+  }
+
+  private persistir(): void {
+    guardar(CLAVE_ESTUDIANTES, this.estudiantesSignal());
   }
 }
